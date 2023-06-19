@@ -1,6 +1,7 @@
 package com.yash.dev.service;
 
 import com.yash.dev.entity.Product;
+import com.yash.dev.exception.ProductServiceCustomException;
 import com.yash.dev.model.ProductRequest;
 import com.yash.dev.model.ProductResponse;
 import com.yash.dev.repository.ProductRepository;
@@ -39,7 +40,7 @@ public class ProductServiceImpl implements ProductService{
     public ProductResponse getProductById(long productId) {
         log.info("Get the product for productId : {}",productId);
         Product product=productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product with given id is not found"));
+                .orElseThrow(() -> new ProductServiceCustomException("Product with given id is not found","PRODUCT_NOT_FOUND"));
         ProductResponse productResponse=new ProductResponse();
         copyProperties(product, productResponse);
         return productResponse;
