@@ -12,7 +12,7 @@
 	<artifactId>order-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>order-service</name>
-	<description>Microservices Development project for Order Service</description>
+	<description>Microservices Development project for Shopping Cart - Order Service</description>
 	<properties>
 		<java.version>17</java.version>
 		<spring-cloud.version>2022.0.3</spring-cloud.version>
