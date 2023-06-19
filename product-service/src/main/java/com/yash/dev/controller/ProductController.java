@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-@RequestMapping
+@RequestMapping("/api")
 public class ProductController {
 
     private ProductService productService;
@@ -25,7 +25,7 @@ public class ProductController {
         productService=prdService;
     }
 
-    @PostMapping("/addProduct")
+    @PostMapping("/product")
     public ResponseEntity<Long> addProduct(@RequestBody ProductRequest productRequest) {
         long productId = productService.addProduct(productRequest);
         return new ResponseEntity<>(productId, HttpStatus.CREATED);
