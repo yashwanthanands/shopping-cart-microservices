@@ -1,6 +1,7 @@
 package com.yash.dev.service;
 
 import com.yash.dev.entity.Order;
+import com.yash.dev.external.client.ProductService;
 import com.yash.dev.model.OrderRequest;
 import com.yash.dev.repository.OrderRepository;
 import java.time.Instant;
@@ -18,6 +19,13 @@ public class OrderServiceImpl implements OrderService {
 
     private OrderRepository orderRepository;
 
+    private ProductService productService;
+
+    @Autowired
+    public OrderServiceImpl(ProductService prdService) {
+        productService = prdService;
+    }
+
     @Autowired
     public OrderServiceImpl(OrderRepository orRepository) {
         orderRepository=orRepository;
@@ -30,6 +38,8 @@ public class OrderServiceImpl implements OrderService {
         //Payment Service -> Complete the Payment -> If Success-> COMPLETE OR CANCEL for failure
 
         log.info("Placing Order Request: {}", orderRequest);
+        productService.reduceQuantity(orderRequest.getProductId(),orderRequest.getQuantity());
+        log.info("Creating Order with Status Created");
         Order order= Order.builder()
                 .amount(orderRequest.getTotalAmount())
                 .orderStatus("CREATED")
