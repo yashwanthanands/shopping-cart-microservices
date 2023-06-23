@@ -22,13 +22,9 @@ public class OrderServiceImpl implements OrderService {
     private ProductService productService;
 
     @Autowired
-    public OrderServiceImpl(ProductService prdService) {
+    public OrderServiceImpl(ProductService prdService, OrderRepository orRepository) {
         productService = prdService;
-    }
-
-    @Autowired
-    public OrderServiceImpl(OrderRepository orRepository) {
-        orderRepository=orRepository;
+        orderRepository = orRepository;
     }
 
     @Override
