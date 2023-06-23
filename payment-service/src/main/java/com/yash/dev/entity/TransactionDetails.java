@@ -31,7 +31,7 @@ public class TransactionDetails {
     @Column(name="order_id")
     private long orderId;
 
-    @Column(name="order_id")
+    @Column(name="payment_mode")
     private String paymentMode;
 
     @Column(name="reference_number")
