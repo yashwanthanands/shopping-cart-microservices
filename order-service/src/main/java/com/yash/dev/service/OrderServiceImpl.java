@@ -1,7 +1,9 @@
 package com.yash.dev.service;
 
 import com.yash.dev.entity.Order;
+import com.yash.dev.external.client.PaymentService;
 import com.yash.dev.external.client.ProductService;
+import com.yash.dev.external.request.PaymentRequest;
 import com.yash.dev.model.OrderRequest;
 import com.yash.dev.repository.OrderRepository;
 import java.time.Instant;
@@ -21,10 +23,13 @@ public class OrderServiceImpl implements OrderService {
 
     private ProductService productService;
 
+    private PaymentService paymentService;
+
     @Autowired
-    public OrderServiceImpl(ProductService prdService, OrderRepository orRepository) {
+    public OrderServiceImpl(ProductService prdService, OrderRepository orRepository,PaymentService payService) {
         productService = prdService;
         orderRepository = orRepository;
+        paymentService = payService;
     }
 
     @Override
@@ -44,6 +49,25 @@ public class OrderServiceImpl implements OrderService {
                 .quantity(orderRequest.getQuantity())
                 .build();
         order = orderRepository.save(order);
+
+        log.info("Calling Payment Service to complete the order request");
+
+        PaymentRequest paymentRequest = PaymentRequest.builder()
+                .orderId(order.getId())
+                .paymentMode(orderRequest.getPaymentMode())
+                .amount(orderRequest.getTotalAmount())
+                .build();
+        String orderStatus = null;
+                try {
+                    paymentService.doPayment(paymentRequest);
+                    log.info("Payment done successfully. Changing the order status to PLACED");
+                    orderStatus = "PLACED";
+                }catch(Exception e) {
+                    log.error("Error occured in payment. Chaning the order status to FAILED");
+                    orderStatus = "PAYMENT_FAILED";
+                }
+                order.setOrderStatus(orderStatus);
+                orderRepository.save(order);
 
         log.info("Order Placed successfully with Order ID : {}",order.getId());
         return order.getId();
