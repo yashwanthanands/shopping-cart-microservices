@@ -2,7 +2,7 @@ package com.yash.dev.external.decoder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yash.dev.exception.CustomException;
-import com.yash.dev.external.response.ErroResponse;
+import com.yash.dev.external.response.ErrorResponse;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import java.io.IOException;
@@ -21,8 +21,8 @@ public class CustomErrorDecoder implements ErrorDecoder {
         log.info("::{}",response.request().headers());
 
         try {
-            ErroResponse erroResponse =objectMapper.readValue(response.body().asInputStream(),ErroResponse.class);
-            return new CustomException(erroResponse.getErrorMessage(), erroResponse.getErrorCode(), response.status());
+            ErrorResponse errorResponse =objectMapper.readValue(response.body().asInputStream(), ErrorResponse.class);
+            return new CustomException(errorResponse.getErrorMessage(), errorResponse.getErrorCode(), response.status());
         } catch (IOException e) {
             throw new CustomException("Internal Server Error","INTERNAL_SERVER_ERROR",
                     500);
