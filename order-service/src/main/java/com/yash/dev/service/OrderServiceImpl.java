@@ -5,9 +5,10 @@ import com.yash.dev.exception.CustomException;
 import com.yash.dev.external.client.PaymentService;
 import com.yash.dev.external.client.ProductService;
 import com.yash.dev.external.request.PaymentRequest;
+import com.yash.dev.external.response.PaymentResponse;
 import com.yash.dev.model.OrderRequest;
 import com.yash.dev.model.OrderResponse;
-import com.yash.dev.model.ProductResponse;
+import com.yash.dev.external.response.ProductResponse;
 import com.yash.dev.repository.OrderRepository;
 import java.time.Instant;
 import lombok.extern.log4j.Log4j2;
@@ -92,17 +93,36 @@ public class OrderServiceImpl implements OrderService {
         ProductResponse productResponse = restTemplate.getForObject("http://PRODUCT-SERVICE/api/product/"+order.getProductId(),
                 ProductResponse.class);
 
+        log.info("Getting the payment information from the payment service");
+        PaymentResponse paymentResponse = restTemplate.getForObject(
+                "http://PAYMENT_SERVICE/api/payment/"+order.getProductId(),
+                PaymentResponse.class
+        );
+
+
         OrderResponse.ProductDetails productDetails =
                 OrderResponse.ProductDetails.builder()
                         .productName(productResponse.getProductName())
                         .productId(productResponse.getProductId())
-                        .build()
+                        .build();
+
+        OrderResponse.PaymentDetails paymentDetails
+                = OrderResponse.PaymentDetails.builder()
+                .paymentId(paymentResponse.getPaymentId())
+                .paymentDate(paymentResponse.getPaymentDate())
+                .orderId(paymentResponse.getOrderId())
+                .status(paymentResponse.getStatus())
+                .amount(paymentResponse.getAmount())
+                .build();
+
+
         OrderResponse orderResponse = OrderResponse.builder()
                 .orderId(order.getId())
                 .orderStatus(order.getOrderStatus())
                 .amount(order.getAmount())
                 .orderDate(order.getOrderDate())
                 .productDetails(productDetails)
+                .paymentDetails(paymentDetails)
                 .build();
         return orderResponse;
     }

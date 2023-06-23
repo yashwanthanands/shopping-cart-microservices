@@ -1,4 +1,4 @@
-package com.yash.dev.model;
+package com.yash.dev.external.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
