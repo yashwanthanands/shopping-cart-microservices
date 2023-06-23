@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class TransactionDetails {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
