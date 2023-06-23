@@ -1,10 +1,12 @@
 package com.yash.dev.service;
 
 import com.yash.dev.entity.Order;
+import com.yash.dev.exception.CustomException;
 import com.yash.dev.external.client.PaymentService;
 import com.yash.dev.external.client.ProductService;
 import com.yash.dev.external.request.PaymentRequest;
 import com.yash.dev.model.OrderRequest;
+import com.yash.dev.model.OrderResponse;
 import com.yash.dev.repository.OrderRepository;
 import java.time.Instant;
 import lombok.extern.log4j.Log4j2;
@@ -71,5 +73,20 @@ public class OrderServiceImpl implements OrderService {
 
         log.info("Order Placed successfully with Order ID : {}",order.getId());
         return order.getId();
+    }
+
+    @Override
+    public OrderResponse getOrderDetails(long orderId) {
+        log.info("Get order details for Order ID : {} ",orderId);
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new CustomException("Order not found for the order id :"+orderId,
+                        "NOT_FOUND",404));
+        OrderResponse orderResponse = OrderResponse.builder()
+                .orderId(order.getId())
+                .orderStatus(order.getOrderStatus())
+                .amount(order.getAmount())
+                .orderDate(order.getOrderDate())
+                .build();
+        return orderResponse;
     }
 }
