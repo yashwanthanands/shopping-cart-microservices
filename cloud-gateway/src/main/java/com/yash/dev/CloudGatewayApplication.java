@@ -6,7 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JCircuitBreakerFactory;
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JConfigBuilder;
 import org.springframework.cloud.client.circuitbreaker.Customizer;
+import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.context.annotation.Bean;
+import reactor.core.publisher.Mono;
 
 @SpringBootApplication
 public class CloudGatewayApplication {
@@ -21,5 +23,10 @@ public class CloudGatewayApplication {
 				id -> new Resilience4JConfigBuilder(id)
 						.circuitBreakerConfig(CircuitBreakerConfig.ofDefaults())
 						.build());
+	}
+
+	@Bean
+	KeyResolver userKeySolver() {
+		return exchange -> Mono.just("userKey");
 	}
 }
