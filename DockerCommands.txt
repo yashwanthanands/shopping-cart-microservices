@@ -1,0 +1,13 @@
+Go into the project directory
+Run  'mvn clean install' to generate the jar in target folder
+Run 'docker build -t yashwanthanands/serviceregistry:0.0.2 .' to build the docker image ( '.' represents current directory)
+Run 'docker images' to list and check the generated dockerimages
+Run 'docker run -d -p8761:8761 --name serviceregistry a6f573154421' to start the container with docker image
+Run 'docker stop' to stop the container
+Run 'docker start' to start the container
+Run 'docker ps' to list the active containers
+Run 'docker logs container_id' to check the logs of specified container
+Run 'docker rm container_id' to remove the container
+Run 'docker run -d -p9296:9296 -e EUREKA_SERVER_ADDRESS=http://host.docker.internal:8761/eureka --name configserver a6f573154421' to start the container with docker image (network service communication Eureka server)
+Run 'docker login -u username -p password' to login into docker hub
+Run 'docker push yashwanthanands/serviceregistry:0.0.2' to push the docker image into docker hub repository
