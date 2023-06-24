@@ -27,5 +27,6 @@ services:
       - EUREKA_SERVER_ADDRESS=http://host.docker.internal:9761/eureka
       - CONFIG_SERVER_URL= configserver
     depends_on:
-      - configserver
+      configserver:
+        condition: service_healthy
 	
