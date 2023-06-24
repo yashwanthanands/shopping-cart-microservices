@@ -1,0 +1,21 @@
+version: '1'
+services:
+  serviceregistry:
+    image: 'yashwanthanands/serviceregistry:0.0.1'
+    container_name: : serviceregistry
+    ports:
+      - '8761:8761'
+  configserver:
+    image: 'yashwanthanands/configserver:0.0.1'
+    container_name: configserver
+    ports:
+      - '9296:9296'
+    depends_on:
+      - serviceregistry
+  cloudgateway:
+    image: 'yashwanthanands/cloudgateway:0.0.1'
+    ports:
+      - '9090:9090'
+    depends_on:
+      - configserver
+	
