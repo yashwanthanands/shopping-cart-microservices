@@ -12,3 +12,4 @@ Run 'docker run -d -p9296:9296 -e EUREKA_SERVER_ADDRESS=http://host.docker.inter
 Run 'docker login -u username -p password' to login into docker hub
 Run 'docker push yashwanthanands/serviceregistry:0.0.2' to push the docker image into docker hub repository
 Run 'docker-compose -f docker-compose.yml up -d' to run all docker images at once based on yml file
+Run 'docker-compose -f docker-compose.yml down -d' to stop all docker images at once based on yml file
