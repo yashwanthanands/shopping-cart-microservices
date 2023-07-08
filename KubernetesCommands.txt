@@ -1,0 +1,32 @@
+Kubernetes Commands
+It will create deployment and also pod
+kubectl create deployment nginx --image=nginx
+
+To list all the resources(pods,deployment,
+replicaset)
+kubectl get all
+
+To get more information
+kubectl get all -o
+
+To get details of the particular deployment
+kubectl describe deployment nginx
+
+To get details of the particular pod
+kubectl get pods 
+kubectl describe pod pod_name
+
+To check the logs of pod
+kubectl logs pod_name
+
+To execute the commands inside the pod
+kubectl exec -it pod_name -- /bin/bash
+
+To edit the deployment metadata config
+kubectl edit deployment deployment_name
+
+To delete the deployment
+kubectl delete deployment deployment_name
+
+
+
