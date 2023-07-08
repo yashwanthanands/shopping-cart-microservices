@@ -2,7 +2,7 @@ version: '1'
 services:
   serviceregistry:
     image: 'yashwanthanands/serviceregistry:0.0.1'
-    container_name: : serviceregistry
+    container_name: serviceregistry
     ports:
       - '8761:8761'
   configserver:
@@ -11,9 +11,9 @@ services:
     ports:
       - '9296:9296'
     environment:
-      - EUREKA_SERVER_ADDRESS=http://host.docker.internal:9761/eureka
+      - EUREKA_SERVER_ADDRESS=http://serviceregistry:8761/eureka
     healthcheck:
-      test: ["CMD","curl","-f","http://configserver:9296/actuator/health"]
+      test: ["CMD", "curl", "-f", "http://configserver:9296/actuator/health"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -21,12 +21,12 @@ services:
       - serviceregistry
   cloudgateway:
     image: 'yashwanthanands/cloudgateway:0.0.1'
+    container_name: cloudgateway
     ports:
       - '9090:9090'
     environment:
-      - EUREKA_SERVER_ADDRESS=http://host.docker.internal:9761/eureka
-      - CONFIG_SERVER_URL= configserver
+      - EUREKA_SERVER_ADDRESS=http://serviceregistry:8761/eureka
+      - CONFIG_SERVER_URL=configserver
     depends_on:
       configserver:
         condition: service_healthy
-	
